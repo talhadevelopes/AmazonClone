@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Js-Project</title>
+    <link rel="stylesheet" href="cutie.css">
+</head>
+<body>
+    <p>YouTube Subscribe Button</p>
+    <button class="js-subscribe-button subscribe-button" onclick="subscribe()">Subscribe</button>
+
+    <p>Amazon Shipping Calculator</p>
+    <input type="text" placeholder="Enter your total cost" class="js-cost-input css-input" onkeydown="enterSubmit(event)">
+    <button class="js-submit-button css-calculate-button"  onclick="costCalculation()">Submit</button>
+    <p class="js-submit-result"></p>
+    <p class="js-error-message error-message"></p>
+
+    <p>Enter your name:</p>
+    <input class="js-name-input" placeholder="Enter your name" onkeydown="enterKey(event)">
+    <button class="js-submit-button">Submit</button>
+    <p class="js-message"></p>
+
+    <script>
+        function enterSubmit(event) {
+            if (event.key === 'Enter') {
+                costCalculation();
+            }
+        }
+
+        function subscribe() {
+            const button = document.querySelector('.js-subscribe-button');
+            if (button.innerHTML === 'Subscribe') {
+                button.innerHTML = 'Subscribed';
+                button.classList.add('is-subscribed');
+            } else {
+                button.innerHTML = 'Subscribe';
+                button.classList.remove('is-subscribed');
+            }
+        }
+
+        function costCalculation() {
+    const inputElement = document.querySelector('.js-cost-input');
+    let cost = Number(inputElement.value) * 100;  // Changed the order of operations for clarity
+
+    // Check for negative value first
+    if (cost < 0) {
+        document.querySelector('.js-error-message').innerHTML = `Error: Cannot be less than $0`;
+        document.querySelector('.js-submit-result').innerHTML = ""; // Clear previous valid result
+        return;  // Stop further execution if there's an error
+    }
+
+    // Clear any previous error if the input is valid
+    document.querySelector('.js-error-message').innerHTML = "";
+
+    // Add extra charge if the cost is less than 4000
+    if (cost < 4000) {
+        cost += 1000;
+    }
+
+    // Display the calculated cost
+    document.querySelector('.js-submit-result').innerHTML = `$${cost / 100}`;
+    inputElement.value = '';
+}
+
+    function enterKey(event) {
+            if (event.key === 'Enter') {
+                const name1 = document.querySelector('.js-name-input');
+                document.querySelector('.js-message').innerHTML = `Your Name is ${name1.value}`;
+                name1.value = '';
+            } else if (event.key ) {
+
+            }
+        }
+    </script>
+</body>
+</html>

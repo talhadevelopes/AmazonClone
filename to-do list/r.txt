@@ -1,0 +1,120 @@
+//Takes array and Returns LAst value
+
+function getLastValue(array) {
+    const lastIndex = array.length -1;
+    return array[lastIndex];
+}
+
+console.log(getLastValue([1,2,23,32,34]));
+
+//Swapping Last Value
+function swapArray(array) {
+    const Lastindex = array.length
+-1;
+    const lastValue = array[Lastindex];
+    const firstValue = array[0];
+    array[0] = lastValue;
+    array[Lastindex] = firstValue;
+    return array;
+}
+console.log(swapArray([1,2,2,2,2,2]));
+
+
+//Increase by 1
+let array = [1,2,3];
+let result = [];
+
+for ( let i = 0; i < array.length; i++) {
+    result.push(array[i] + 1);
+}
+console.log(array);
+console.log(result);
+
+//Increase value by 1 of array
+function addOne(array) {
+    const result = [];
+    
+    for (let i = 0; i < array.length; i++) {
+        result.push(array[i] + 1);
+    }
+    return result;
+}
+console.log(addOne([2,10]));
+
+//array of number where each number is increased by 'num'
+function addNum(array,num) {
+    const result = [];
+    for (let i = 0; i < array.length; i++) {
+        result.push(array[i] + num);
+    }
+    return result;
+}
+
+console.log(addNum([1,2,3,4],200));
+
+//add two arrays
+function addArrays(array1,array2) {
+    let result = [];
+    for (let i = 0; i < array1.length; i++) {
+        result.push(array1[i] + array2[i]);
+    }
+    return result;
+}
+console.log(addArrays([1.2,3],[1,2,3]));
+
+//takes array and returns positive numbers
+function countPositive(nums) {
+    let result = [];
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > 0) {
+            result++;
+        }
+    }
+    return result;
+}
+
+console.log(countPositive([1,2,3,4,5,6,-1,-3,-9]));
+
+//min,max
+function minMax(nums) {
+    function minMax(nums) {
+    const result = {
+        min: null,
+        max: null
+    };
+    
+    for (let i = 0; i < nums.length; i++) {
+        const value = nums[i];
+        if (value < result.min || result.min === null) {
+            result.min = value;
+        } else if (value > result.max || result.max === null) {
+            result.max = value;
+        }
+    }
+    return result;
+}
+
+console.log(minMax([]));
+
+//count no of strings
+function countWords(words) {
+    let result = {};
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        if (!result[word]) {
+            result[word] = 1;
+          } else {
+            result[word]++;
+          }
+        }
+
+        return result;
+      }
+
+      console.log(countWords(['apple', 'grape', 'apple', 'apple']));
+
+
+
+      ////Accumulator Pattern
+      1.create a variable to store the result
+      2. loop through the array and update the result
