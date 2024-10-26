@@ -154,3 +154,13 @@
   padding: 8px;
   border-radius: 50px;
 }
+
+.js-added-to-cart-message {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  transition: .2s linear;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
