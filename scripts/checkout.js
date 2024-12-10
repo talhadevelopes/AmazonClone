@@ -1,21 +1,22 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, updateDeliveryOptions } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 
-// Initialize cart summary HTML
-let cartSummaryHTML = ""; // Initialize to avoid concatenation issues
+
+let cartSummaryHTML = "";
 const today = dayjs();
 
+function renderOrderSummary() {
 
-cart.forEach((cartItem) => {
+  cart.forEach((cartItem) => {
 
-  const productId = cartItem.productId;
-  const matchingProduct = products.find((product) => product.id === productId);
+    const productId = cartItem.productId;
+    const matchingProduct = products.find((product) => product.id === productId);
 
-  if (matchingProduct) {
-    cartSummaryHTML += `
+    if (matchingProduct) {
+      cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
           Delivery date: ${dayjs().add(7, "days").format("dddd, MMMM D")}
@@ -47,28 +48,31 @@ cart.forEach((cartItem) => {
         </div>
       </div>
     `;
-  }
-});
+    }
+  });
 
 
-// Generate delivery options HTML
-function deliveryOptionsHTML(matchingProduct, cartItem) {
-  // Ensure deliveryOption is not undefined
-  const selectedDeliveryOption = cartItem.deliveryOption || {};
+  // Generate delivery options HTML
+  function deliveryOptionsHTML(matchingProduct, cartItem) {
+    // Ensure deliveryOption is not undefined
+    const selectedDeliveryOption = cartItem.deliveryOption || {};
 
-  return deliveryOptions
-    .map((deliveryOption) => {
-      const deliveryDate = today.add(deliveryOption.deliveryDays, "days").format("dddd, MMMM D");
-      const priceString =
-        deliveryOption.priceCents === 0
-          ? "FREE"
-          : `$${formatCurrency(deliveryOption.priceCents)}`;
+    return deliveryOptions
+      .map((deliveryOption) => {
+        const deliveryDate = today.add(deliveryOption.deliveryDays, "days").format("dddd, MMMM D");
+        const priceString =
+          deliveryOption.priceCents === 0
+            ? "FREE"
+            : `$${formatCurrency(deliveryOption.priceCents)}`;
 
-      // Check if the current option is selected
-      const isChecked = deliveryOption.id === selectedDeliveryOption.id;
+        // Check if the current option is selected
+        const isChecked = deliveryOption.id === selectedDeliveryOption.id;
 
-      return `
-      <div class="delivery-option">
+        return `
+      <div class="delivery-option js-delivery-option" 
+      data-product-id-"${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}"
+      >
         <input type="radio" ${isChecked ? "checked" : ""} 
           class="delivery-option-input" 
           name="delivery-option-${matchingProduct.id}">
@@ -81,24 +85,36 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
           </div>
         </div>
       </div>`;
+      })
+      .join("");
+  }
+
+
+  // Update the DOM
+  document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
+
+  // Use event delegation for delete functionality
+  document.querySelector(".js-order-summary").addEventListener("click", (event) => {
+    if (event.target.classList.contains("js-delete-link")) {
+      const productId = event.target.dataset.productId;
+      removeFromCart(productId);
+
+      // Remove the corresponding cart item container
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      if (container) {
+        container.remove();
+      }
+    }
+  });
+
+  document.querySelectorAll('.js-delivery-option').forEach((element) => {
+    element.addEventListener('click', () => {
+
+      const { productId, deliveryOptionID } = element.dataset;
+      updateDeliveryOptions(productId, deliveryOptionID);
+      renderOrderSummary();
     })
-    .join("");
+  })
 }
 
-
-// Update the DOM
-document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
-
-// Use event delegation for delete functionality
-document.querySelector(".js-order-summary").addEventListener("click", (event) => {
-  if (event.target.classList.contains("js-delete-link")) {
-    const productId = event.target.dataset.productId;
-    removeFromCart(productId);
-
-    // Remove the corresponding cart item container
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    if (container) {
-      container.remove();
-    }
-  }
-});
+renderOrderSummary();
