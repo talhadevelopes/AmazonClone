@@ -7,3 +7,8 @@ MVC - Model - View - Controller [aka desgin pattern]
 
 -----
 Testing:
+Used Jasmine for Testing the Code.
+Jasmine is a Testing Framework that helps us Test Code easily.
+[delte specs and src folers]
+1. describe() --> a Function in Jasmine
+2. it() --> it describes Test.
