@@ -14,6 +14,18 @@ Jasmine is a Testing Framework that helps us Test Code easily.
 2. it() --> it describes Test.
 3. spyOn --> In simple words, `spyOn` in Jasmine watches a specific function to see if it's called, how many times it's called, and with what arguments, and you can also make it behave differently during the test.
 4.beforeEach() --> In Jasmine, `beforeEach()` is a function that runs specific code before every test (`it` block) in a test suite, ensuring each test starts with the same setup or preparation.
+5.beforeAll()
+6.done =>
+
+[beforeAll((done) => {
+    loadProducts(() => {
+        done();
+    });
+})]
 
 ----
 OOPS-[organizing code into objects]
+classes
+inheritance and Polymorphism
+----
+18:
