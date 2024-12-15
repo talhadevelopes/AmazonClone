@@ -29,3 +29,7 @@ classes
 inheritance and Polymorphism
 ----
 18:
+1. Pormises : a better way to handle Asynchronous code
+2: Similar to done() in Jasmine
+3. let us wait till async code to finish before we move furthuer.
+4. Promise.all(): lets us run multiple promises at the same time and wait for all of them to finish

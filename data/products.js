@@ -89,13 +89,37 @@ const object3 = {
 object3.method();
 */
 
-
-
-
 export let products = [];
+
+export function loadProductsFetch() {
+  const promise = fetch(
+    'https://supersimplebackend.dev/products'
+  ).then((response) => {
+    return response.json();
+  }).then((productsData) => {
+    products = productsData.map((productDetails) => {
+      if (productDetails.type === 'clothing') {
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    });
+
+    console.log('load products');
+  }).catch((error) => {
+    console.log('Unexpected error. Please try again later.');
+  });
+
+  return promise;
+}
+/*
+loadProductsFetch().then(() => {
+  console.log('next step');
+});
+*/
 
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
+
   xhr.addEventListener('load', () => {
     products = JSON.parse(xhr.response).map((productDetails) => {
       if (productDetails.type === 'clothing') {
@@ -103,15 +127,19 @@ export function loadProducts(fun) {
       }
       return new Product(productDetails);
     });
-    console.log('Load Products');
+
+    console.log('load products');
+
     fun();
   });
+
+  xhr.addEventListener('error', (error) => {
+    console.log('Unexpected error. Please try again later.');
+  });
+
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
 }
-
-loadProducts();
-
 
 /*
 export const products = [
@@ -780,4 +808,3 @@ export const products = [
   return new Product(productDetails);
 });
 */
-
